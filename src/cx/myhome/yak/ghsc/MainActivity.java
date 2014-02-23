@@ -1,14 +1,7 @@
 package cx.myhome.yak.ghsc;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathFactory;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.w3c.dom.Document;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -46,26 +39,9 @@ public class MainActivity extends Activity implements OnClickListener {
 			TextView view = (TextView)findViewById(R.id.textView1);
 			view.setText("Test");
 
-			DefaultHttpClient client = new DefaultHttpClient();
-			HttpGet g = new HttpGet("https://github.com/yak1ex");
-			HttpResponse res = null;
 			try {
-				res = client.execute(g);
-			} catch (Exception e) {
-				view.setText(e.toString());
-				e.printStackTrace();
-				return;
-			}
-			view.setText(res.getStatusLine().toString());
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			try {
-				DocumentBuilder b = dbf.newDocumentBuilder();
-				Document d = b.parse(res.getEntity().getContent());
-
-				XPathFactory xf = XPathFactory.newInstance();
-				XPath xp = xf.newXPath();
-
-				view.setText(xp.evaluate("//div[contains(@class, 'contrib-streak-current')]/span/text()", d));
+				Document d = Jsoup.connect("https://github.com/yak1ex/").get();
+				view.setText(d.getElementsByAttributeValueContaining("class", "contrib-streak-current").text());
 			} catch (Exception e) {
 				view.setText(e.toString());
 				e.printStackTrace();
