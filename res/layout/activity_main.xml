@@ -18,8 +18,60 @@
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="16dp"
+        android:layout_alignTop="@+id/textView1"
+        android:layout_below="@id/textView1"
+        android:layout_centerHorizontal="false"
+        android:layout_marginTop="10dp"
         android:text="@string/button_label" />
+
+    <TextView
+        android:id="@+id/textViewLabelHead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="17dp"
+        android:text="@string/label_head"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textViewDays"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewLabelHead"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="26dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textViewLabelDays"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textViewDays"
+        android:layout_marginLeft="24dp"
+        android:layout_toRightOf="@id/textViewDays"
+        android:text="@string/label_days"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textViewBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewLabelToKeep"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="11dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textViewLabelToKeep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewLabelDays"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="21dp"
+        android:text="@string/label_to_keep"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

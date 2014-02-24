@@ -21,7 +21,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 // TODO: Account settings
-// TODO: Text layout
+// TODO: Design e.g. background
+// TODO: Keep values for rotation etc.
 
 public class MainActivity extends Activity implements OnClickListener {
 
@@ -101,11 +102,17 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		if(v.getId() == R.id.button1) {
 			TextView view = (TextView)findViewById(R.id.textView1);
-
 			try {
 // TODO: Set on init
 				Status s = scrape();
-				view.setText(String.format("%d days %s %dh%dm%ds", s.days, s.done, s.left_hour, s.left_min, s.left_sec));
+				TextView viewDays = (TextView)findViewById(R.id.textViewDays);
+				viewDays.setText(Integer.toString(s.days));
+				TextView viewBy = (TextView)findViewById(R.id.textViewBy);
+				if(s.done) {
+					viewBy.setText("Already done!!");
+				} else {
+					viewBy.setText(String.format("%dh%dm%ds", s.left_hour, s.left_min, s.left_sec));
+				}
 			} catch (Exception e) {
 				view.setText(e.toString());
 				e.printStackTrace();
