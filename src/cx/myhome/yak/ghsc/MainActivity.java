@@ -54,6 +54,8 @@ public class MainActivity extends Activity{
 
 // FIXME: Move accessing network to another thread
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
+
+		update();
 	}
 
 	@Override
@@ -106,7 +108,8 @@ public class MainActivity extends Activity{
 	public void update() {
 		TextView view = (TextView)findViewById(R.id.textView1);
 		try {
-// TODO: Set on init
+			// FIXME: Redraw does not occur immediately
+			view.setText("Updating...");
 			Status s = scrape();
 			TextView viewDays = (TextView)findViewById(R.id.textViewDays);
 			viewDays.setText(Integer.toString(s.days));
@@ -116,6 +119,7 @@ public class MainActivity extends Activity{
 			} else {
 				viewBy.setText(String.format("%dh%dm%ds", s.left_hour, s.left_min, s.left_sec));
 			}
+			view.setText("Tap to update");
 		} catch (Exception e) {
 			view.setText(e.toString());
 			e.printStackTrace();
