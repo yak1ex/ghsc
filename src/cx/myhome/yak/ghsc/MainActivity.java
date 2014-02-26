@@ -1,6 +1,5 @@
 package cx.myhome.yak.ghsc;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import android.os.Bundle;
-import android.os.StrictMode;
+import android.os.Handler;
+import android.os.Message;
 import android.app.Activity;
 import android.view.MotionEvent;
 import android.view.Menu;
@@ -22,10 +22,12 @@ import android.widget.TextView;
 // TODO: Design e.g. background
 // TODO: Keep values for rotation etc.
 
-public class MainActivity extends Activity{
+public class MainActivity extends Activity implements Handler.Callback {
 
 	class Status
 	{
+		public boolean success;
+		public String error;
 		public int days;
 		public boolean done;
 		public int left_hour, left_min, left_sec;
@@ -51,10 +53,6 @@ public class MainActivity extends Activity{
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-// FIXME: Move accessing network to another thread
-		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
-
 		update();
 	}
 
@@ -75,42 +73,59 @@ public class MainActivity extends Activity{
 		return true;
 	}
 
-	Status scrape() throws IOException {
-		Status ret = new Status();
+	class RequestRunnable implements Runnable
+	{
+		private Handler mHandler;
+		RequestRunnable(Handler handler) {
+			mHandler = handler;
+		}
+		public void run() {
+			Message m = new Message();
+			m.obj = scrape();
+			mHandler.sendMessage(m);
+		}
+		private Status scrape() {
+			Status ret = new Status();
 
-		Document d = Jsoup.connect("https://github.com/yak1ex/").get();
-		String s = d.getElementsByAttributeValueContaining("class", "contrib-streak-current").text();
-		Pattern p = Pattern.compile("(\\d+) days (\\w+) (\\d+) - (\\w+) (\\d+) Current Streak");
-		Matcher m = p.matcher(s);
-		m.find();
-		ret.days = Integer.parseInt(m.group(1));
+			try {
+				Document d = Jsoup.connect("https://github.com/yak1ex/").get();
+				String s = d.getElementsByAttributeValueContaining("class", "contrib-streak-current").text();
+				Pattern p = Pattern.compile("(\\d+) days (\\w+) (\\d+) - (\\w+) (\\d+) Current Streak");
+				Matcher m = p.matcher(s);
+				m.find();
+				ret.days = Integer.parseInt(m.group(1));
 
-		TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
-		Calendar c = Calendar.getInstance(tz);
-		Calendar c2 = (Calendar)c.clone();
-		c2.set(Calendar.HOUR_OF_DAY, 0);
-		c2.set(Calendar.MINUTE, 0);
-		c2.set(Calendar.SECOND, 0);
+				TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+				Calendar c = Calendar.getInstance(tz);
+				Calendar c2 = (Calendar)c.clone();
+				c2.set(Calendar.HOUR_OF_DAY, 0);
+				c2.set(Calendar.MINUTE, 0);
+				c2.set(Calendar.SECOND, 0);
 
-		Calendar c3 = (Calendar)c2.clone();
-		c3.set(Calendar.DATE, Integer.parseInt(m.group(5)));
-		c3.set(Calendar.MONTH,  monthName.get(m.group(4)));
-		ret.done = c2.equals(c3);
+				Calendar c3 = (Calendar)c2.clone();
+				c3.set(Calendar.DATE, Integer.parseInt(m.group(5)));
+				c3.set(Calendar.MONTH,  monthName.get(m.group(4)));
+				ret.done = c2.equals(c3);
 
-		c2.add(Calendar.DATE, 1);
-		long diff = c2.getTimeInMillis() - c.getTimeInMillis();
-		ret.left_sec = (int)((diff / 1000) % 60);
-		ret.left_min = (int)((diff / 1000 / 60) % 60);
-		ret.left_hour = (int)(diff / 1000 / 60 / 60);
-		return ret;
+				c2.add(Calendar.DATE, 1);
+				long diff = c2.getTimeInMillis() - c.getTimeInMillis();
+				ret.left_sec = (int)((diff / 1000) % 60);
+				ret.left_min = (int)((diff / 1000 / 60) % 60);
+				ret.left_hour = (int)(diff / 1000 / 60 / 60);
+
+				ret.success = true;
+			} catch (Exception e) {
+				ret.error = e.toString();
+				ret.success = false;
+			}
+			return ret;
+		}
 	}
 
-	public void update() {
+	public boolean handleMessage(Message msg) {
+		Status s = (Status)msg.obj;
 		TextView view = (TextView)findViewById(R.id.textView1);
-		try {
-			// FIXME: Redraw does not occur immediately
-			view.setText(getResources().getText(R.string.updating));
-			Status s = scrape();
+		if(s.success) {
 			TextView viewDays = (TextView)findViewById(R.id.textViewDays);
 			viewDays.setText(Integer.toString(s.days));
 			TextView viewBy = (TextView)findViewById(R.id.textViewBy);
@@ -120,11 +135,16 @@ public class MainActivity extends Activity{
 				viewBy.setText(getResources().getString(R.string.hms, s.left_hour, s.left_min, s.left_sec));
 			}
 			view.setText(getResources().getText(R.string.tap_to_update));
-		} catch (Exception e) {
-			view.setText(e.toString());
-			e.printStackTrace();
-			return;
+		} else {
+			view.setText(s.error);
 		}
+		return true;
+	}
+
+	public void update() {
+		TextView view = (TextView)findViewById(R.id.textView1);
+		view.setText(getResources().getText(R.string.updating));
+		new Thread(new RequestRunnable(new Handler(this))).start();
 	}
 
 }
