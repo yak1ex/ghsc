@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="@string/hello_world" />
+        android:text="@string/tap_to_update" />
 
     <TextView
         android:id="@+id/textViewLabelHead"
@@ -61,6 +61,7 @@
         android:layout_below="@+id/textViewLabelDays"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="21dp"
+        android:gravity="center_horizontal"
         android:text="@string/label_to_keep"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 

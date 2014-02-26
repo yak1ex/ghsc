@@ -109,17 +109,17 @@ public class MainActivity extends Activity{
 		TextView view = (TextView)findViewById(R.id.textView1);
 		try {
 			// FIXME: Redraw does not occur immediately
-			view.setText("Updating...");
+			view.setText(getResources().getText(R.string.updating));
 			Status s = scrape();
 			TextView viewDays = (TextView)findViewById(R.id.textViewDays);
 			viewDays.setText(Integer.toString(s.days));
 			TextView viewBy = (TextView)findViewById(R.id.textViewBy);
 			if(s.done) {
-				viewBy.setText("Already done!!");
+				viewBy.setText(getResources().getText(R.string.done));
 			} else {
-				viewBy.setText(String.format("%dh%dm%ds", s.left_hour, s.left_min, s.left_sec));
+				viewBy.setText(getResources().getString(R.string.hms, s.left_hour, s.left_min, s.left_sec));
 			}
-			view.setText("Tap to update");
+			view.setText(getResources().getText(R.string.tap_to_update));
 		} catch (Exception e) {
 			view.setText(e.toString());
 			e.printStackTrace();
