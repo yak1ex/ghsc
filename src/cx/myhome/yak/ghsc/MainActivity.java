@@ -14,17 +14,15 @@ import org.jsoup.nodes.Document;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.app.Activity;
-import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.MotionEvent;
 import android.view.Menu;
-import android.widget.Button;
 import android.widget.TextView;
 
 // TODO: Account settings
 // TODO: Design e.g. background
 // TODO: Keep values for rotation etc.
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends Activity{
 
 	class Status
 	{
@@ -54,11 +52,18 @@ public class MainActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		Button button = (Button)findViewById(R.id.button1);
-		button.setOnClickListener(this);
-
 // FIXME: Move accessing network to another thread
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event)
+	{
+		if(event.getAction() == MotionEvent.ACTION_DOWN) {
+			update();
+			return true;
+		}
+		return super.onTouchEvent(event);
 	}
 
 	@Override
@@ -98,26 +103,23 @@ public class MainActivity extends Activity implements OnClickListener {
 		return ret;
 	}
 
-	@Override
-	public void onClick(View v) {
-		if(v.getId() == R.id.button1) {
-			TextView view = (TextView)findViewById(R.id.textView1);
-			try {
+	public void update() {
+		TextView view = (TextView)findViewById(R.id.textView1);
+		try {
 // TODO: Set on init
-				Status s = scrape();
-				TextView viewDays = (TextView)findViewById(R.id.textViewDays);
-				viewDays.setText(Integer.toString(s.days));
-				TextView viewBy = (TextView)findViewById(R.id.textViewBy);
-				if(s.done) {
-					viewBy.setText("Already done!!");
-				} else {
-					viewBy.setText(String.format("%dh%dm%ds", s.left_hour, s.left_min, s.left_sec));
-				}
-			} catch (Exception e) {
-				view.setText(e.toString());
-				e.printStackTrace();
-				return;
+			Status s = scrape();
+			TextView viewDays = (TextView)findViewById(R.id.textViewDays);
+			viewDays.setText(Integer.toString(s.days));
+			TextView viewBy = (TextView)findViewById(R.id.textViewBy);
+			if(s.done) {
+				viewBy.setText("Already done!!");
+			} else {
+				viewBy.setText(String.format("%dh%dm%ds", s.left_hour, s.left_min, s.left_sec));
 			}
+		} catch (Exception e) {
+			view.setText(e.toString());
+			e.printStackTrace();
+			return;
 		}
 	}
 

@@ -12,26 +12,16 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:text="@string/hello_world" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView1"
-        android:layout_below="@id/textView1"
-        android:layout_centerHorizontal="false"
-        android:layout_marginTop="10dp"
-        android:text="@string/button_label" />
 
     <TextView
         android:id="@+id/textViewLabelHead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button1"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="18dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="10dp"
         android:text="@string/label_head"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 

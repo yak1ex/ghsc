@@ -3,7 +3,7 @@
 
     <string name="app_name">GitHub Streak Checker</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Tap to update</string>
     <string name="button_label">Check</string>
     <string name="label_days">days</string>
     <string name="label_head">Current Streak</string>
