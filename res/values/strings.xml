@@ -2,7 +2,9 @@
 <resources>
 
     <string name="app_name">GitHub Streak Checker</string>
+
     <string name="action_settings">Settings</string>
+
     <string name="label_days">days</string>
     <string name="label_head">Current Streak</string>
     <string name="label_to_keep">To keep it, you need to make some contribution in</string>
@@ -10,5 +12,9 @@
     <string name="updating">Updating…</string>
     <string name="hms">%1$dh%2$dm%3$ds</string>
     <string name="done">Already done!!</string>
+
+    <string name="title_activity_settings">Settings</string>
+    <string name="account_title">Target account</string>
+    <string name="account_summary">GitHub account name to be checked</string>
 
 </resources>
