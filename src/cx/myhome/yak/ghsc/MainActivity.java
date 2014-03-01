@@ -21,10 +21,15 @@ import android.view.Menu;
 import android.widget.TextView;
 
 // TODO: Design e.g. background
-// TODO: Keep values for rotation etc.
 
 public class MainActivity extends Activity implements Handler.Callback {
 
+	static final String BUNDLE_KEY_SUCCESS = "success";
+	static final String BUNDLE_KEY_DAYS = "days";
+	static final String BUNDLE_KEY_DONE = "done";
+	static final String BUNDLE_KEY_LEFT_HOUR = "hour";
+	static final String BUNDLE_KEY_LEFT_MIN = "min";
+	static final String BUNDLE_KEY_LEFT_SEC = "sec";
 	class Status
 	{
 		public boolean success;
@@ -34,6 +39,7 @@ public class MainActivity extends Activity implements Handler.Callback {
 		public int left_hour, left_min, left_sec;
 	}
 
+	Status mStatus;
 	Map<String, Integer> monthName;
 
 	@Override
@@ -54,7 +60,44 @@ public class MainActivity extends Activity implements Handler.Callback {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		update();
+
+		mStatus = new Status();
+		if(savedInstanceState == null) {
+			update();
+		}
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putBoolean(BUNDLE_KEY_SUCCESS, mStatus.success);
+		if(mStatus.success) {
+			outState.putInt(BUNDLE_KEY_DAYS, mStatus.days);
+			outState.putBoolean(BUNDLE_KEY_DONE, mStatus.done);
+			if(!mStatus.done){
+				outState.putInt(BUNDLE_KEY_LEFT_HOUR, mStatus.left_hour);
+				outState.putInt(BUNDLE_KEY_LEFT_MIN, mStatus.left_min);
+				outState.putInt(BUNDLE_KEY_LEFT_SEC, mStatus.left_sec);
+			}
+		}
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		mStatus.success = savedInstanceState.getBoolean(BUNDLE_KEY_SUCCESS);
+		if(mStatus.success) {
+			mStatus.days = savedInstanceState.getInt(BUNDLE_KEY_DAYS);
+			mStatus.done = savedInstanceState.getBoolean(BUNDLE_KEY_DONE);
+			if(!mStatus.done){
+				mStatus.left_hour = savedInstanceState.getInt(BUNDLE_KEY_LEFT_HOUR);
+				mStatus.left_min = savedInstanceState.getInt(BUNDLE_KEY_LEFT_MIN);
+				mStatus.left_sec = savedInstanceState.getInt(BUNDLE_KEY_LEFT_SEC);
+			}
+			updateView();
+		} else {
+			update();
+		}
 	}
 
 	@Override
@@ -141,20 +184,27 @@ public class MainActivity extends Activity implements Handler.Callback {
 		}
 	}
 
+	private void updateView()
+	{
+		TextView viewDays = (TextView)findViewById(R.id.textViewDays);
+		viewDays.setText(Integer.toString(mStatus.days));
+		TextView viewBy = (TextView)findViewById(R.id.textViewBy);
+		if(mStatus.done) {
+			viewBy.setText(getResources().getText(R.string.done));
+		} else {
+			viewBy.setText(getResources().getString(R.string.hms, mStatus.left_hour, mStatus.left_min, mStatus.left_sec));
+		}
+		TextView view = (TextView)findViewById(R.id.textView1);
+		view.setText(getResources().getText(R.string.tap_to_update));
+	}
+
 	public boolean handleMessage(Message msg) {
 		Status s = (Status)msg.obj;
-		TextView view = (TextView)findViewById(R.id.textView1);
 		if(s.success) {
-			TextView viewDays = (TextView)findViewById(R.id.textViewDays);
-			viewDays.setText(Integer.toString(s.days));
-			TextView viewBy = (TextView)findViewById(R.id.textViewBy);
-			if(s.done) {
-				viewBy.setText(getResources().getText(R.string.done));
-			} else {
-				viewBy.setText(getResources().getString(R.string.hms, s.left_hour, s.left_min, s.left_sec));
-			}
-			view.setText(getResources().getText(R.string.tap_to_update));
+			mStatus = s;
+			updateView();
 		} else {
+			TextView view = (TextView)findViewById(R.id.textView1);
 			view.setText(s.error);
 		}
 		return true;
