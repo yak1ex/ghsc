@@ -27,10 +27,10 @@
         <activity
             android:name="cx.myhome.yak.ghsc.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="android.preference.PreferenceActivity" >
+            android:parentActivityName="cx.myhome.yak.ghsc.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="android.preference.PreferenceActivity" />
+                android:value="cx.myhome.yak.ghsc.MainActivity" />
         </activity>
     </application>
 
