@@ -88,8 +88,10 @@ public class MainActivity extends Activity implements Handler.Callback {
 	class RequestRunnable implements Runnable
 	{
 		private Handler mHandler;
-		RequestRunnable(Handler handler) {
+		private String mAccount;
+		RequestRunnable(Handler handler, String account) {
 			mHandler = handler;
+			mAccount = account;
 		}
 		public void run() {
 			Message m = new Message();
@@ -100,7 +102,7 @@ public class MainActivity extends Activity implements Handler.Callback {
 			Status ret = new Status();
 
 			try {
-				Document d = Jsoup.connect("https://github.com/yak1ex/").get();
+				Document d = Jsoup.connect("https://github.com/" + mAccount).get();
 				String s = d.getElementsByAttributeValueContaining("class", "contrib-streak-current").text();
 				Pattern p = Pattern.compile("(\\d+) days (\\w+) (\\d+) - (\\w+) (\\d+) Current Streak");
 				Matcher m = p.matcher(s);
@@ -156,7 +158,7 @@ public class MainActivity extends Activity implements Handler.Callback {
 	public void update() {
 		TextView view = (TextView)findViewById(R.id.textView1);
 		view.setText(getResources().getText(R.string.updating));
-		new Thread(new RequestRunnable(new Handler(this))).start();
+		new Thread(new RequestRunnable(new Handler(this), SettingsActivity.getAccount(this))).start();
 	}
 
 }
