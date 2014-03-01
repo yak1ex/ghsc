@@ -20,7 +20,6 @@ import android.view.MotionEvent;
 import android.view.Menu;
 import android.widget.TextView;
 
-// TODO: Account settings
 // TODO: Design e.g. background
 // TODO: Keep values for rotation etc.
 
@@ -103,10 +102,16 @@ public class MainActivity extends Activity implements Handler.Callback {
 
 			try {
 				Document d = Jsoup.connect("https://github.com/" + mAccount).get();
+// FIXME: Handle 404, probably wrong account name
+// FIXME: Handle network error
 				String s = d.getElementsByAttributeValueContaining("class", "contrib-streak-current").text();
 				Pattern p = Pattern.compile("(\\d+) days (\\w+) (\\d+) - (\\w+) (\\d+) Current Streak");
 				Matcher m = p.matcher(s);
 				m.find();
+// FIXME: Check if matched or not
+// FIXME: Handle 0 day
+//     0 days Rock - Hard Place Current Streak
+
 				ret.days = Integer.parseInt(m.group(1));
 
 				TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
