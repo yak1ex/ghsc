@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.Menu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 // TODO: Design e.g. background
 
@@ -194,8 +195,6 @@ public class MainActivity extends Activity implements Handler.Callback {
 		} else {
 			viewBy.setText(getResources().getString(R.string.hms, mStatus.left_hour, mStatus.left_min, mStatus.left_sec));
 		}
-		TextView view = (TextView)findViewById(R.id.textView1);
-		view.setText(getResources().getText(R.string.tap_to_update));
 	}
 
 	public boolean handleMessage(Message msg) {
@@ -203,16 +202,15 @@ public class MainActivity extends Activity implements Handler.Callback {
 		if(s.success) {
 			mStatus = s;
 			updateView();
+			Toast.makeText(this, R.string.updated, Toast.LENGTH_LONG).show();
 		} else {
-			TextView view = (TextView)findViewById(R.id.textView1);
-			view.setText(s.error);
+			Toast.makeText(this, s.error, Toast.LENGTH_LONG).show();
 		}
 		return true;
 	}
 
 	public void update() {
-		TextView view = (TextView)findViewById(R.id.textView1);
-		view.setText(getResources().getText(R.string.updating));
+		Toast.makeText(this, R.string.updating, Toast.LENGTH_SHORT).show();
 		new Thread(new RequestRunnable(new Handler(this), SettingsActivity.getAccount(this))).start();
 	}
 

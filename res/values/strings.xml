@@ -10,6 +10,7 @@
     <string name="label_to_keep">To keep it, you need to make some contribution in</string>
     <string name="tap_to_update">Tap to update</string>
     <string name="updating">Updating…</string>
+    <string name="updated">Updated</string>
     <string name="hms">%1$dh%2$dm%3$ds</string>
     <string name="done">Already done!!</string>
 
