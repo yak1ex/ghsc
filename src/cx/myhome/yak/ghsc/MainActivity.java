@@ -80,11 +80,9 @@ public class MainActivity extends Activity implements Handler.Callback {
 		if(mStatus.success) {
 			outState.putInt(BUNDLE_KEY_DAYS, mStatus.days);
 			outState.putBoolean(BUNDLE_KEY_DONE, mStatus.done);
-			if(!mStatus.done){
-				outState.putInt(BUNDLE_KEY_LEFT_HOUR, mStatus.left_hour);
-				outState.putInt(BUNDLE_KEY_LEFT_MIN, mStatus.left_min);
-				outState.putInt(BUNDLE_KEY_LEFT_SEC, mStatus.left_sec);
-			}
+			outState.putInt(BUNDLE_KEY_LEFT_HOUR, mStatus.left_hour);
+			outState.putInt(BUNDLE_KEY_LEFT_MIN, mStatus.left_min);
+			outState.putInt(BUNDLE_KEY_LEFT_SEC, mStatus.left_sec);
 		}
 	}
 
@@ -95,11 +93,9 @@ public class MainActivity extends Activity implements Handler.Callback {
 		if(mStatus.success) {
 			mStatus.days = savedInstanceState.getInt(BUNDLE_KEY_DAYS);
 			mStatus.done = savedInstanceState.getBoolean(BUNDLE_KEY_DONE);
-			if(!mStatus.done){
-				mStatus.left_hour = savedInstanceState.getInt(BUNDLE_KEY_LEFT_HOUR);
-				mStatus.left_min = savedInstanceState.getInt(BUNDLE_KEY_LEFT_MIN);
-				mStatus.left_sec = savedInstanceState.getInt(BUNDLE_KEY_LEFT_SEC);
-			}
+			mStatus.left_hour = savedInstanceState.getInt(BUNDLE_KEY_LEFT_HOUR);
+			mStatus.left_min = savedInstanceState.getInt(BUNDLE_KEY_LEFT_MIN);
+			mStatus.left_sec = savedInstanceState.getInt(BUNDLE_KEY_LEFT_SEC);
 			updateView();
 		} else {
 			update();
@@ -201,11 +197,20 @@ public class MainActivity extends Activity implements Handler.Callback {
 	{
 		TextView viewDays = (TextView)findViewById(R.id.textViewDays);
 		viewDays.setText(Integer.toString(mStatus.days));
+		TextView viewLabelToKeep = (TextView)findViewById(R.id.textViewLabelToKeep);
 		TextView viewBy = (TextView)findViewById(R.id.textViewBy);
+		TextView viewLabelWillStart = (TextView)findViewById(R.id.textViewLabelWillStart);
+		TextView viewWillStart = (TextView)findViewById(R.id.textViewWillStart);
 		if(mStatus.done) {
+			viewLabelToKeep.setText(getResources().getText(R.string.label_to_keep_done));
 			viewBy.setText(getResources().getText(R.string.done));
+			viewLabelWillStart.setText(getResources().getText(R.string.label_will_start));
+			viewWillStart.setText(getResources().getString(R.string.hms, mStatus.left_hour, mStatus.left_min, mStatus.left_sec));
 		} else {
+			viewLabelToKeep.setText(getResources().getText(R.string.label_to_keep));
 			viewBy.setText(getResources().getString(R.string.hms, mStatus.left_hour, mStatus.left_min, mStatus.left_sec));
+			viewLabelWillStart.setText("");
+			viewWillStart.setText("");
 		}
 	}
 

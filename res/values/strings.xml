@@ -13,7 +13,7 @@
     <string name="updating">Updating…</string>
     <string name="updated">Updated</string>
     <string name="hms">%1$dh%2$dm%3$ds</string>
-    <string name="label_to_keep_done">To keep it, there are some contribution you have</string>
+    <string name="label_to_keep_done">To keep it, there are some contribution today you have</string>
     <string name="done">Already done!!</string>
     <string name="label_will_start">The next time slot will start after</string>
 
