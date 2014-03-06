@@ -13,6 +13,10 @@
     <string name="updating">Updating…</string>
     <string name="updated">Updated</string>
     <string name="hms">%1$dh%2$dm%3$ds</string>
+    <string name="last_update_days">Last update: %ddays ago</string>
+    <string name="last_update_hours">Last update: %dhours ago</string>
+    <string name="last_update_minutes">Last update: %dminutes ago</string>
+    <string name="last_update_seconds">Last update: %dseconds ago</string>
     <string name="label_to_keep_done">To keep it, there are some contribution today you have</string>
     <string name="done">Already done!!</string>
     <string name="label_will_start">The next time slot will start after</string>

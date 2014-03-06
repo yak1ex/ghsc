@@ -34,6 +34,7 @@ public class MainActivity extends Activity implements Handler.Callback {
 	static final String BUNDLE_KEY_LEFT_HOUR = "hour";
 	static final String BUNDLE_KEY_LEFT_MIN = "min";
 	static final String BUNDLE_KEY_LEFT_SEC = "sec";
+	static final String BUNDLE_KEY_UPDATED = "updated";
 	enum Error { NO_ERROR, NETWORK_ERROR, ACCOUNT_ERROR, UNKNOWN_ERROR };
 	class Status
 	{
@@ -43,6 +44,7 @@ public class MainActivity extends Activity implements Handler.Callback {
 		public int days;
 		public boolean done;
 		public int left_hour, left_min, left_sec;
+		public long updated;
 	}
 
 	Status mStatus;
@@ -83,6 +85,7 @@ public class MainActivity extends Activity implements Handler.Callback {
 			outState.putInt(BUNDLE_KEY_LEFT_HOUR, mStatus.left_hour);
 			outState.putInt(BUNDLE_KEY_LEFT_MIN, mStatus.left_min);
 			outState.putInt(BUNDLE_KEY_LEFT_SEC, mStatus.left_sec);
+			outState.putLong(BUNDLE_KEY_UPDATED, mStatus.updated);
 		}
 	}
 
@@ -96,10 +99,18 @@ public class MainActivity extends Activity implements Handler.Callback {
 			mStatus.left_hour = savedInstanceState.getInt(BUNDLE_KEY_LEFT_HOUR);
 			mStatus.left_min = savedInstanceState.getInt(BUNDLE_KEY_LEFT_MIN);
 			mStatus.left_sec = savedInstanceState.getInt(BUNDLE_KEY_LEFT_SEC);
+			mStatus.updated = savedInstanceState.getLong(BUNDLE_KEY_UPDATED);
 			updateView();
 		} else {
 			update();
 		}
+	}
+
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		updateTime();
 	}
 
 	@Override
@@ -159,6 +170,7 @@ public class MainActivity extends Activity implements Handler.Callback {
 
 				TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
 				Calendar c = Calendar.getInstance(tz);
+				ret.updated = c.getTimeInMillis();
 				Calendar c2 = (Calendar)c.clone();
 				c2.set(Calendar.HOUR_OF_DAY, 0);
 				c2.set(Calendar.MINUTE, 0);
@@ -197,6 +209,7 @@ public class MainActivity extends Activity implements Handler.Callback {
 	{
 		TextView viewDays = (TextView)findViewById(R.id.textViewDays);
 		viewDays.setText(Integer.toString(mStatus.days));
+
 		TextView viewLabelToKeep = (TextView)findViewById(R.id.textViewLabelToKeep);
 		TextView viewBy = (TextView)findViewById(R.id.textViewBy);
 		TextView viewLabelWillStart = (TextView)findViewById(R.id.textViewLabelWillStart);
@@ -214,11 +227,34 @@ public class MainActivity extends Activity implements Handler.Callback {
 		}
 	}
 
+	private void updateTime()
+	{
+		TextView viewLastUpdate = (TextView)findViewById(R.id.textViewLastUpdate);
+		if(!mStatus.success) {
+			viewLastUpdate.setText(getResources().getText(R.string.last_update));
+			return;
+		}
+		String lastUpdate;
+		TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+		long diff = Calendar.getInstance(tz).getTimeInMillis() - mStatus.updated;
+		if(diff / 1000 >= 24 * 3600) {
+			 lastUpdate = (String)getResources().getString(R.string.last_update_days, diff / 1000 / 24 / 3600);
+		} else if(diff / 1000 >= 3600) {
+			 lastUpdate = (String)getResources().getString(R.string.last_update_hours, diff / 1000 / 3600);
+		} else if(diff / 1000 >= 60) {
+			 lastUpdate = (String)getResources().getString(R.string.last_update_minutes, diff / 1000 / 60);
+		} else {
+			 lastUpdate = (String)getResources().getString(R.string.last_update_seconds, diff / 1000);
+		}
+		viewLastUpdate.setText(lastUpdate);
+	}
+
 	public boolean handleMessage(Message msg) {
 		Status s = (Status)msg.obj;
 		if(s.success) {
 			mStatus = s;
 			updateView();
+			updateTime();
 			Toast.makeText(this, R.string.updated, Toast.LENGTH_LONG).show();
 		} else {
 			switch(s.error_kind) {
