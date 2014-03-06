@@ -1,5 +1,6 @@
 package cx.myhome.yak.ghsc;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.TimeZone;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -15,6 +17,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.Menu;
@@ -31,10 +34,12 @@ public class MainActivity extends Activity implements Handler.Callback {
 	static final String BUNDLE_KEY_LEFT_HOUR = "hour";
 	static final String BUNDLE_KEY_LEFT_MIN = "min";
 	static final String BUNDLE_KEY_LEFT_SEC = "sec";
+	enum Error { NO_ERROR, NETWORK_ERROR, ACCOUNT_ERROR, UNKNOWN_ERROR };
 	class Status
 	{
 		public boolean success;
 		public String error;
+		public Error error_kind;
 		public int days;
 		public boolean done;
 		public int left_hour, left_min, left_sec;
@@ -146,8 +151,6 @@ public class MainActivity extends Activity implements Handler.Callback {
 
 			try {
 				Document d = Jsoup.connect("https://github.com/" + mAccount).get();
-// FIXME: Handle 404, probably wrong account name
-// FIXME: Handle network error
 				String s = d.getElementsByAttributeValueContaining("class", "contrib-streak-current").text();
 				Pattern p = Pattern.compile("(\\d+) days (\\w+) (\\d+) - (\\w+) (\\d+) Current Streak");
 				Matcher m = p.matcher(s);
@@ -177,8 +180,17 @@ public class MainActivity extends Activity implements Handler.Callback {
 				ret.left_hour = (int)(diff / 1000 / 60 / 60);
 
 				ret.success = true;
+			} catch(HttpStatusException e) {
+				ret.error = e.toString();
+				ret.error_kind = Error.ACCOUNT_ERROR;
+				ret.success = false;
+			} catch(IOException e) {
+				ret.error = e.toString();
+				ret.error_kind = Error.NETWORK_ERROR;
+				ret.success = false;
 			} catch (Exception e) {
 				ret.error = e.toString();
+				ret.error_kind = Error.UNKNOWN_ERROR;
 				ret.success = false;
 			}
 			return ret;
@@ -204,7 +216,20 @@ public class MainActivity extends Activity implements Handler.Callback {
 			updateView();
 			Toast.makeText(this, R.string.updated, Toast.LENGTH_LONG).show();
 		} else {
-			Toast.makeText(this, s.error, Toast.LENGTH_LONG).show();
+			switch(s.error_kind) {
+			case NETWORK_ERROR:
+				Toast.makeText(this, "Failed to access GitHub", Toast.LENGTH_LONG).show();
+				break;
+			case ACCOUNT_ERROR:
+				Toast.makeText(this, "Account name not found", Toast.LENGTH_LONG).show();
+				break;
+			case UNKNOWN_ERROR:
+				Toast.makeText(this, "Unknown error occurred", Toast.LENGTH_LONG).show();
+				break;
+			case NO_ERROR: // not reached
+				break;
+			}
+			Log.d("MainActivity", s.error);
 		}
 		return true;
 	}
