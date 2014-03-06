@@ -12,6 +12,7 @@
     <string name="tap_to_update">Tap to update</string>
     <string name="updating">Updating…</string>
     <string name="updated">Updated</string>
+    <string name="need_account">Please set account name</string>
     <string name="hms">%1$dh%2$dm%3$ds</string>
     <string name="last_update_days">Last update: %ddays ago</string>
     <string name="last_update_hours">Last update: %dhours ago</string>
