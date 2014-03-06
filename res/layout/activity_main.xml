@@ -12,8 +12,10 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="@string/tap_to_update" />
+        android:layout_above="@+id/textViewLastUpdate"
+        android:layout_marginBottom="5dp"
+        android:text="@string/tap_to_update"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/textViewLabelHead"
@@ -21,7 +23,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
         android:text="@string/label_head"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -32,7 +33,7 @@
         android:layout_below="@+id/textViewLabelHead"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="28dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="15dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -51,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textViewLabelToKeep"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="5dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -60,9 +61,35 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textViewLabelDays"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
         android:text="@string/label_to_keep"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/textViewLastUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/last_update" />
+
+    <TextView
+        android:id="@+id/textViewLabelWillStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewBy"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/textViewWillStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewLabelWillStart"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>
