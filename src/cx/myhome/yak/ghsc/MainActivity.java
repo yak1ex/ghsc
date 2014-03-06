@@ -157,6 +157,7 @@ public class MainActivity extends Activity implements Handler.Callback {
 			Status ret = new Status();
 
 			try {
+// FIXME: Check if account is set
 				Document d = Jsoup.connect("https://github.com/" + mAccount).get();
 				String s = d.getElementsByAttributeValueContaining("class", "contrib-streak-current").text();
 				Pattern p = Pattern.compile("(\\d+) days (\\w+) (\\d+) - (\\w+) (\\d+) Current Streak");
