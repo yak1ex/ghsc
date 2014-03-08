@@ -161,12 +161,13 @@ public class MainActivity extends Activity implements Handler.Callback {
 				String s = d.getElementsByAttributeValueContaining("class", "contrib-streak-current").text();
 				Pattern p = Pattern.compile("(\\d+) days (\\w+) (\\d+) - (\\w+) (\\d+) Current Streak");
 				Matcher m = p.matcher(s);
-				m.find();
-// FIXME: Check if matched or not
-// FIXME: Handle 0 day
-//     0 days Rock - Hard Place Current Streak
-
-				ret.days = Integer.parseInt(m.group(1));
+				boolean matches = m.find(); 
+				if(!matches && !s.equals("0 days Rock - Hard Place Current Streak")) {
+					ret.error = "Unknown string gotten: " + s;
+					ret.error_kind = Error.UNKNOWN_ERROR;
+					ret.success = false;
+					return ret;
+				}
 
 				TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
 				Calendar c = Calendar.getInstance(tz);
@@ -176,10 +177,13 @@ public class MainActivity extends Activity implements Handler.Callback {
 				c2.set(Calendar.MINUTE, 0);
 				c2.set(Calendar.SECOND, 0);
 
-				Calendar c3 = (Calendar)c2.clone();
-				c3.set(Calendar.DATE, Integer.parseInt(m.group(5)));
-				c3.set(Calendar.MONTH,  monthName.get(m.group(4)));
-				ret.done = c2.equals(c3);
+				if(matches) {
+					ret.days = Integer.parseInt(m.group(1));
+					Calendar c3 = (Calendar)c2.clone();
+					c3.set(Calendar.DATE, Integer.parseInt(m.group(5)));
+					c3.set(Calendar.MONTH,  monthName.get(m.group(4)));
+					ret.done = c2.equals(c3);
+				}
 
 				c2.add(Calendar.DATE, 1);
 				long diff = c2.getTimeInMillis() - c.getTimeInMillis();
