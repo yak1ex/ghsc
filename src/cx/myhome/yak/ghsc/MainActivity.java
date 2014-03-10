@@ -169,7 +169,7 @@ public class MainActivity extends Activity implements Handler.Callback {
 					return ret;
 				}
 
-				TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+				TimeZone tz = TimeZone.getTimeZone("Asia/Tokyo");
 				Calendar c = Calendar.getInstance(tz);
 				ret.updated = c.getTimeInMillis();
 				Calendar c2 = (Calendar)c.clone();
