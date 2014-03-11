@@ -12,7 +12,7 @@
     <string name="tap_to_update">Tap to update</string>
     <string name="updating">Updating…</string>
     <string name="updated">Updated</string>
-    <string name="need_account">Please set account name</string>
+    <string name="need_account">Please set account name and timezone</string>
     <string name="hms">%1$dh%2$dm%3$ds</string>
     <string name="last_update_days">Last update: %ddays ago</string>
     <string name="last_update_hours">Last update: %dhours ago</string>
@@ -26,5 +26,8 @@
     <string name="account_key">account</string>
     <string name="account_title">Target account</string>
     <string name="account_summary">GitHub account name to be checked</string>
+    <string name="timezone_key">timezone</string>
+    <string name="timezone_title">Target timezone</string>
+    <string name="timezone_summary">Timezone to calculate duration</string>
 
 </resources>

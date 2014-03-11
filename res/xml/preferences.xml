@@ -5,4 +5,9 @@
         android:title="@string/account_title"
         android:summary="@string/account_summary"
         android:persistent="true" />
+	<ListPreference
+	    android:key="@string/timezone_key"
+	    android:title="@string/timezone_title"
+	    android:summary="@string/timezone_summary"
+	    android:persistent="true" />
 </PreferenceScreen>

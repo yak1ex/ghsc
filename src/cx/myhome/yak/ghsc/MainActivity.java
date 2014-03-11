@@ -144,9 +144,11 @@ public class MainActivity extends Activity implements Handler.Callback {
 	{
 		private Handler mHandler;
 		private String mAccount;
-		RequestRunnable(Handler handler, String account) {
+		private String mTimezone;
+		RequestRunnable(Handler handler, String account, String timezone) {
 			mHandler = handler;
 			mAccount = account;
+			mTimezone = timezone;
 		}
 		public void run() {
 			Message m = new Message();
@@ -169,7 +171,7 @@ public class MainActivity extends Activity implements Handler.Callback {
 					return ret;
 				}
 
-				TimeZone tz = TimeZone.getTimeZone("Asia/Tokyo");
+				TimeZone tz = TimeZone.getTimeZone(mTimezone);
 				Calendar c = Calendar.getInstance(tz);
 				ret.updated = c.getTimeInMillis();
 				Calendar c2 = (Calendar)c.clone();
@@ -281,12 +283,13 @@ public class MainActivity extends Activity implements Handler.Callback {
 
 	public void update() {
 		String account = SettingsActivity.getAccount(this);
-		if(account.equals("")) {
+		String timezone = SettingsActivity.getTimezone(this);
+		if(account.equals("") || timezone.equals("")) {
 			Toast.makeText(this, R.string.need_account, Toast.LENGTH_SHORT).show();
 			startActivity(new Intent(this, SettingsActivity.class));
 		} else {
 			Toast.makeText(this, R.string.updating, Toast.LENGTH_SHORT).show();
-			new Thread(new RequestRunnable(new Handler(this), account)).start();
+			new Thread(new RequestRunnable(new Handler(this), account, timezone)).start();
 		}
 	}
 
