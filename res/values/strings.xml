@@ -30,4 +30,133 @@
     <string name="timezone_title">Target timezone</string>
     <string name="timezone_summary">Timezone to calculate duration</string>
 
+    <!-- Timezone IDs -->
+    <string-array name="timezone_ids">
+    <!-- Rferring the following URL contents: -->
+    <!--     https://android.googlesource.com/platform/packages/apps/Settings/+/7dcd20f9a6877342a92d0e42c1692a25429960f5/res/xml/timezones.xml -->
+    <!-- The file does not have copyright and license notice while other resouces in the folder have. -->
+    <!-- I believe this sytle of the usage is not problematic from the viewpoint of the copyright law, -->
+    <!-- but anyway I made remarks here about the origin and possible license notice at least -->
+    <!-- It may distributed, at least, under the Apache License 2.0 by The Android Open Source Project -->
+    <!--     https://android.googlesource.com/platform/packages/apps/Settings/+/afc4ab2ffbb8327ddce9907961295a32cbf49d0f/NOTICE -->
+        <!-- described as DST not in effect -->
+        <!-- GMT-11:00 -->
+            <item>Pacific/Midway</item>
+        <!-- GMT-10:00 -->
+            <item>Pacific/Honolulu</item>
+        <!-- GMT-9:00 -->
+            <item>America/Anchorage</item>
+        <!-- GMT-8:00 -->
+            <item>America/Los_Angeles</item>
+            <item>America/Tijuana</item>
+        <!-- GMT-7:00 -->
+            <item>America/Phoenix</item>
+            <item>America/Chihuahua</item>
+            <item>America/Denver</item>
+        <!-- GMT-6:00 -->
+            <item>America/Costa_Rica</item>
+            <item>America/Chicago</item>
+            <item>America/Mexico_City</item>
+            <item>America/Regina</item>
+        <!-- GMT-5:00 -->
+            <item>America/Bogota</item>
+            <item>America/New_York</item>
+            <!-- GMT-4:30 -->
+            <item>America/Caracas</item>
+        <!-- GMT-4:00 -->
+            <item>America/Barbados</item>
+            <item>America/Halifax</item>
+            <item>America/Manaus</item>
+            <item>America/Santiago</item>
+        <!-- GMT-3:30 -->
+            <item>America/St_Johns</item>
+        <!-- GMT-3:00 -->
+            <item>America/Sao_Paulo</item>
+            <item>America/Argentina/Buenos_Aires</item>
+            <item>America/Godthab</item>
+            <item>America/Montevideo</item>
+        <!-- GMT-2:00 -->
+            <item>Atlantic/South_Georgia</item>
+        <!-- GMT-1:00 -->
+            <item>Atlantic/Azores</item>
+            <item>Atlantic/Cape_Verde</item>
+        <!-- GMT+0:00 -->
+            <item>Africa/Casablanca</item>
+            <item>Europe/London</item>
+        <!-- GMT+1:00 -->
+            <item>Europe/Amsterdam</item>
+            <item>Europe/Belgrade</item>
+            <item>Europe/Brussels</item>
+            <item>Europe/Sarajevo</item>
+            <item>Africa/Windhoek</item>
+            <item>Africa/Brazzaville</item>
+        <!-- GMT+2:00 -->
+            <item>Asia/Amman</item>
+            <item>Europe/Athens</item>
+            <item>Asia/Beirut</item>
+            <item>Africa/Cairo</item>
+            <item>Europe/Helsinki</item>
+            <item>Asia/Jerusalem</item>
+            <item>Africa/Harare</item>
+        <!-- GMT+3:00 -->
+            <item>Europe/Minsk</item>
+            <item>Asia/Baghdad</item>
+            <item>Asia/Kuwait</item>
+            <item>Africa/Nairobi</item>
+        <!-- GMT+3:30 -->
+            <item>Asia/Tehran</item>
+        <!-- GMT+4:00 -->
+            <item>Europe/Moscow</item>
+            <item>Asia/Baku</item>
+            <item>Asia/Tbilisi</item>
+            <item>Asia/Yerevan</item>
+            <item>Asia/Dubai</item>
+        <!-- GMT+4:30 -->
+            <item>Asia/Kabul</item>
+        <!-- GMT+5:00 -->
+            <item>Asia/Karachi</item>
+            <item>Asia/Oral</item>
+        <!-- GMT+5:30 -->
+            <item>Asia/Calcutta</item>
+            <item>Asia/Colombo</item>
+        <!-- GMT+5:45 -->
+            <item>Asia/Katmandu</item>
+        <!-- GMT+6:00 -->
+            <item>Asia/Yekaterinburg</item>
+            <item>Asia/Almaty</item>
+        <!-- GMT+6:30 -->
+            <item>Asia/Rangoon</item>
+        <!-- GMT+7:00 -->
+            <item>Asia/Bangkok</item>
+            <item>Asia/Jakarta</item>
+        <!-- GMT+8:00 -->
+            <item>Asia/Krasnoyarsk</item>
+            <item>Asia/Shanghai</item>
+            <item>Asia/Hong_Kong</item>
+            <item>Asia/Kuala_Lumpur</item>
+            <item>Australia/Perth</item>
+            <item>Asia/Taipei</item>
+        <!-- GMT+9:00 -->
+            <item>Asia/Irkutsk</item>
+            <item>Asia/Seoul</item>
+            <item>Asia/Tokyo</item>
+        <!-- GMT+9:30 -->
+            <item>Australia/Adelaide</item>
+            <item>Australia/Darwin</item>
+        <!-- GMT+10:00 -->
+            <item>Asia/Yakutsk</item>
+            <item>Australia/Brisbane</item>
+            <item>Australia/Hobart</item>
+            <item>Australia/Sydney</item>
+            <item>Pacific/Guam</item>
+        <!-- GMT+11:00 -->
+            <item>Asia/Vladivostok</item>
+        <!-- GMT+12:00 -->
+            <item>Asia/Magadan</item>
+            <item>Pacific/Auckland</item>
+            <item>Pacific/Fiji</item>
+            <item>Pacific/Majuro</item>
+        <!-- GMT+13:00 -->
+            <item>Pacific/Tongatapu</item>
+    </string-array>
 </resources>

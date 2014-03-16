@@ -1,5 +1,7 @@
 package cx.myhome.yak.ghsc;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.TimeZone;
 
 import android.content.Context;
@@ -12,6 +14,26 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
 public class SettingsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
+
+	private String getOffsetDesc(int offset)
+	{
+		int absOffset = Math.abs(offset);
+		String sign = offset >= 0 ? "+" : "-";
+		return String.format("GMT%s%d:%02d", sign, absOffset / 3600000, absOffset / 60000 % 60);
+	}
+
+	private String getTimezoneDesc(String timezoneID, String delimiter)
+	{
+		TimeZone tz = TimeZone.getTimeZone(timezoneID);
+		Date current = new Date();
+		int rawOffset = tz.getRawOffset();
+		if(tz.inDaylightTime(current)) {
+			return String.format("%s%s%s (DST)%s(ST: %s)", timezoneID, delimiter, getOffsetDesc(rawOffset + tz.getDSTSavings()), delimiter, getOffsetDesc(rawOffset));
+		} else {
+			return String.format("%s%s%s", timezoneID, delimiter, getOffsetDesc(rawOffset));
+		}
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -19,9 +41,15 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 		updateSummary(null);
 		CharSequence timezone_key = getText(R.string.timezone_key);
 		ListPreference timezonePref = (ListPreference)getPreferenceScreen().findPreference(timezone_key);
-		String[] timezone = TimeZone.getAvailableIDs();
-		timezonePref.setEntries(timezone);
+		String[] timezone = getResources().getStringArray(R.array.timezone_ids);
+// TODO: Set default as system defined
+// TODO: sort by offsets in effect
 		timezonePref.setEntryValues(timezone);
+		String[] timezoneDesc = new String[timezone.length];
+		for(int i = 0; i < timezone.length; ++i) {
+			timezoneDesc[i] = getTimezoneDesc(timezone[i], "\n");
+		}
+		timezonePref.setEntries(timezoneDesc);
 	}
 
 	@Override
@@ -52,7 +80,8 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 		}
 		if(key == null || key.equals(timezone_key)) {
 			Preference timezonePref = getPreferenceScreen().findPreference(timezone_key);
-			timezonePref.setSummary(getPreferenceScreen().getSharedPreferences().getString(timezone_key, ""));
+			String id = getPreferenceScreen().getSharedPreferences().getString(timezone_key, "");
+			timezonePref.setSummary(getTimezoneDesc(id, " "));
 		}
 	}
 
