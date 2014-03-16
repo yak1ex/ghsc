@@ -1,6 +1,5 @@
 package cx.myhome.yak.ghsc;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -38,11 +37,9 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
-		updateSummary(null);
 		CharSequence timezone_key = getText(R.string.timezone_key);
 		ListPreference timezonePref = (ListPreference)getPreferenceScreen().findPreference(timezone_key);
 		String[] timezone = getResources().getStringArray(R.array.timezone_ids);
-// TODO: Set default as system defined
 // TODO: sort by offsets in effect
 		timezonePref.setEntryValues(timezone);
 		String[] timezoneDesc = new String[timezone.length];
@@ -50,6 +47,11 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 			timezoneDesc[i] = getTimezoneDesc(timezone[i], "\n");
 		}
 		timezonePref.setEntries(timezoneDesc);
+		// NOTE: I'm not sure the reason but setDefaultValue() seems to have no effect here
+		if(getTimezone(this).equals("")) {
+			timezonePref.setValue(TimeZone.getDefault().getID());
+		}
+		updateSummary(null);
 	}
 
 	@Override
