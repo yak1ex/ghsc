@@ -70,6 +70,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 			timezonePref.setValue(TimeZone.getDefault().getID());
 		}
 		updateSummary(null);
+		setResult(RESULT_OK);
 	}
 
 	@Override
@@ -89,6 +90,7 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
 	{
 		updateSummary(key);
+		setResult(RESULT_FIRST_USER);
 	}
 
 	private void updateSummary(String key) {

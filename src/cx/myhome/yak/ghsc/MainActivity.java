@@ -28,6 +28,8 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements Handler.Callback {
 
+	static final int SETTINGS_REQUEST = 0;
+
 	static final String BUNDLE_KEY_SUCCESS = "success";
 	static final String BUNDLE_KEY_DAYS = "days";
 	static final String BUNDLE_KEY_DONE = "done";
@@ -130,11 +132,15 @@ public class MainActivity extends Activity implements Handler.Callback {
 		return true;
 	}
 
+	private void startSettings() {
+		startActivityForResult(new Intent(this, SettingsActivity.class), SETTINGS_REQUEST);
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
 		case R.id.action_settings:
-			startActivity(new Intent(this, SettingsActivity.class));
+			startSettings();
 			return true;
 		}
 		return false;
@@ -286,11 +292,16 @@ public class MainActivity extends Activity implements Handler.Callback {
 		String timezone = SettingsActivity.getTimezone(this);
 		if(account.equals("") || timezone.equals("")) {
 			Toast.makeText(this, R.string.need_account, Toast.LENGTH_SHORT).show();
-			startActivity(new Intent(this, SettingsActivity.class));
+			startSettings();
 		} else {
 			Toast.makeText(this, R.string.updating, Toast.LENGTH_SHORT).show();
 			new Thread(new RequestRunnable(new Handler(this), account, timezone)).start();
 		}
 	}
 
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == SETTINGS_REQUEST && resultCode == RESULT_FIRST_USER) {
+			update();
+		}
+	}
 }
