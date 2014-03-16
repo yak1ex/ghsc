@@ -1,5 +1,7 @@
 package cx.myhome.yak.ghsc;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -40,7 +42,23 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 		CharSequence timezone_key = getText(R.string.timezone_key);
 		ListPreference timezonePref = (ListPreference)getPreferenceScreen().findPreference(timezone_key);
 		String[] timezone = getResources().getStringArray(R.array.timezone_ids);
-// TODO: sort by offsets in effect
+// Sort by effective offsets
+		TimeZone[] tz = new TimeZone[timezone.length];
+		for(int i = 0; i < timezone.length; ++i) {
+			tz[i] = TimeZone.getTimeZone(timezone[i]);
+		}
+		final Date d = new Date();
+		Arrays.sort(tz, new Comparator<TimeZone>() {
+			public int compare(TimeZone a, TimeZone b) {
+				long a_ = a.getOffset(d.getTime());
+				long b_ = b.getOffset(d.getTime());
+				return a_ < b_ ? -1 : a_ > b_ ? 1 : 0;
+			}
+		});
+// Back to string array
+		for(int i = 0; i < timezone.length; ++i) {
+			timezone[i] = tz[i].getID();
+		}
 		timezonePref.setEntryValues(timezone);
 		String[] timezoneDesc = new String[timezone.length];
 		for(int i = 0; i < timezone.length; ++i) {
