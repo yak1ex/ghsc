@@ -167,10 +167,10 @@ public class MainActivity extends Activity implements Handler.Callback {
 			try {
 				Document d = Jsoup.connect("https://github.com/" + mAccount).get();
 				String s = d.getElementsByAttributeValueContaining("class", "contrib-streak-current").text();
-				Pattern p = Pattern.compile("(\\d+) days (\\w+) (\\d+) - (\\w+) (\\d+) Current Streak");
+				Pattern p = Pattern.compile("(\\d+) days (\\w+) (\\d+) - (\\w+) (\\d+) Current [Ss]treak");
 				Matcher m = p.matcher(s);
 				boolean matches = m.find(); 
-				if(!matches && !s.equals("0 days Rock - Hard Place Current Streak")) {
+				if(!matches && !s.equals("0 days Rock - Hard Place Current [Ss]treak")) {
 					ret.error = "Unknown string gotten: " + s;
 					ret.error_kind = Error.UNKNOWN_ERROR;
 					ret.success = false;
